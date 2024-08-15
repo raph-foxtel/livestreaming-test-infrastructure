@@ -1,0 +1,204 @@
+{
+  "version": "36.0.0",
+  "artifacts": {
+    "CdkMediapackageCloudfrontStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "CdkMediapackageCloudfrontStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "CdkMediapackageCloudfrontStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "CdkMediapackageCloudfrontStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/63fc794fc939c7e97837e7dad77b9efbfb9b3d9e26c9213b5875271d1d19ceaf.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "CdkMediapackageCloudfrontStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        },
+        "stackName": "LiveStack"
+      },
+      "dependencies": [
+        "CdkMediapackageCloudfrontStack.assets"
+      ],
+      "metadata": {
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/Secrets/CdnSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelSecretsCdnSecret2915936B"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/Secrets/cdnSecret": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelSecretscdnSecret439ECA1E"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyMediaPackageRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelMyMediaPackageRole23057D86"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyCfnChannel": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelMyCfnChannelB46F0F54"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/HlsEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelHlsEndpointF46D94C4"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/DashEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelDashEndpointE806C536"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/cmafEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelcmafEndpoint4477D740"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/GetUrlEMPLambda/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelEMPEndpointGetUrlEMPLambdaServiceRole52C7E95B"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/GetUrlEMPLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelEMPEndpointGetUrlEMPLambda40ECF733"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/mediaPackageAccess/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelEMPEndpointmediaPackageAccessDF64B584"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/OutputEMP/Resource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelEMPEndpointOutputEMPD088D9CA"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/OutputEMP/CustomResourcePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelEMPEndpointOutputEMPCustomResourcePolicy508E40EF"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/SSMParameter/Resource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelEMPEndpointSSMParameterA7604984"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/SSMParameter/CustomResourcePolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelEMPEndpointSSMParameterCustomResourcePolicyDDFC539C"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyMediaPackageChannelName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelMyMediaPackageChannelNameF630EF7C"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyMediaPackageChannelEndPointHLS": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelMyMediaPackageChannelEndPointHLSD5816A88"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyMediaPackageChannelEndPointDASH": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelMyMediaPackageChannelEndPointDASHF98DA86A"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyMediaPackageChannelEndPointCMAF": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelMyMediaPackageChannelEndPointCMAF4F82160F"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyEMPIngestEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelMyEMPIngestEndpointC98DED03"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyMediaPackageChannelRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyMediaPackageChannelMyMediaPackageChannelRole864BA9E9"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/AWS679f53fac002430cb0da5b7982bd2287/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AWS679f53fac002430cb0da5b7982bd22872D164C4C"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/CdkMediapackageCloudfrontStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "CdkMediapackageCloudfrontStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

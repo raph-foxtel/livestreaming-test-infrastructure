@@ -1,0 +1,1044 @@
+{
+ "Description": "Deploying CDK with EMP",
+ "Resources": {
+  "MyMediaPackageChannelSecretsCdnSecret2915936B": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "Secret for Secure Resilient Live Streaming Delivery",
+    "GenerateSecretString": {
+     "GenerateStringKey": "MediaPackageCDNIdentifier",
+     "SecretStringTemplate": "{\"MediaPackageCDNIdentifier\":\"\"}"
+    },
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       "MediaPackage/",
+       {
+        "Ref": "AWS::StackName"
+       }
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/Secrets/CdnSecret/Resource"
+   }
+  },
+  "MyMediaPackageChannelMyMediaPackageRole23057D86": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "mediapackage.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "A role to be assumed by MediaPackage",
+    "MaxSessionDuration": 3600,
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "secretsmanager:DescribeSecret",
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:ListSecretVersionIds",
+          "secretsmanager:ListSecrets"
+         ],
+         "Effect": "Allow",
+         "Resource": {
+          "Ref": "MyMediaPackageChannelSecretsCdnSecret2915936B"
+         }
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "policy"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyMediaPackageRole/Resource"
+   }
+  },
+  "MyMediaPackageChannelMyCfnChannelB46F0F54": {
+   "Type": "AWS::MediaPackage::Channel",
+   "Properties": {
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Test Event Live Channel for ",
+       {
+        "Ref": "AWS::StackName"
+       }
+      ]
+     ]
+    },
+    "Id": {
+     "Ref": "AWS::StackName"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/MyCfnChannel"
+   }
+  },
+  "MyMediaPackageChannelHlsEndpointF46D94C4": {
+   "Type": "AWS::MediaPackage::OriginEndpoint",
+   "Properties": {
+    "Authorization": {
+     "CdnIdentifierSecret": {
+      "Ref": "MyMediaPackageChannelSecretsCdnSecret2915936B"
+     },
+     "SecretsRoleArn": {
+      "Fn::GetAtt": [
+       "MyMediaPackageChannelMyMediaPackageRole23057D86",
+       "Arn"
+      ]
+     }
+    },
+    "ChannelId": {
+     "Ref": "AWS::StackName"
+    },
+    "HlsPackage": {
+     "AdMarkers": "PASSTHROUGH",
+     "AdTriggers": [
+      "BREAK",
+      "DISTRIBUTOR_ADVERTISEMENT",
+      "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY",
+      "DISTRIBUTOR_PLACEMENT_OPPORTUNITY",
+      "PROVIDER_ADVERTISEMENT",
+      "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY",
+      "PROVIDER_PLACEMENT_OPPORTUNITY",
+      "SPLICE_INSERT"
+     ],
+     "IncludeIframeOnlyStream": false,
+     "PlaylistWindowSeconds": 300,
+     "ProgramDateTimeIntervalSeconds": 60,
+     "SegmentDurationSeconds": 4,
+     "StreamSelection": {
+      "MaxVideoBitsPerSecond": 2147483647,
+      "MinVideoBitsPerSecond": 0,
+      "StreamOrder": "ORIGINAL"
+     },
+     "UseAudioRenditionGroup": true
+    },
+    "Id": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "-hls"
+      ]
+     ]
+    },
+    "Origination": "DENY"
+   },
+   "DependsOn": [
+    "MyMediaPackageChannelMyCfnChannelB46F0F54"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/HlsEndpoint"
+   }
+  },
+  "MyMediaPackageChannelDashEndpointE806C536": {
+   "Type": "AWS::MediaPackage::OriginEndpoint",
+   "Properties": {
+    "Authorization": {
+     "CdnIdentifierSecret": {
+      "Ref": "MyMediaPackageChannelSecretsCdnSecret2915936B"
+     },
+     "SecretsRoleArn": {
+      "Fn::GetAtt": [
+       "MyMediaPackageChannelMyMediaPackageRole23057D86",
+       "Arn"
+      ]
+     }
+    },
+    "ChannelId": {
+     "Ref": "AWS::StackName"
+    },
+    "DashPackage": {
+     "AdTriggers": [
+      "BREAK",
+      "DISTRIBUTOR_ADVERTISEMENT",
+      "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY",
+      "DISTRIBUTOR_PLACEMENT_OPPORTUNITY",
+      "PROVIDER_ADVERTISEMENT",
+      "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY",
+      "PROVIDER_PLACEMENT_OPPORTUNITY",
+      "SPLICE_INSERT"
+     ],
+     "Encryption": {
+      "SpekeKeyProvider": {
+       "ResourceId": "af6c4e40-093d-4781-a452-56966ab64aa2-722248-AVC-1722398400",
+       "RoleArn": "arn:aws:iam::856308764217:role/MediaPackage",
+       "SystemIds": [
+        "edef8ba9-79d6-4ace-a3c8-27dcd51d21ed",
+        "9a04f079-9840-4286-ab92-e65be0885f95"
+       ],
+       "Url": "https://spekeunifiedcontrol.platform-martian-foxsports-staging.com.au/tkm/v1/streamotion/copyProtectionData"
+      }
+     },
+     "IncludeIframeOnlyStream": true,
+     "ManifestLayout": "FULL",
+     "ManifestWindowSeconds": 300,
+     "MinBufferTimeSeconds": 2,
+     "MinUpdatePeriodSeconds": 6,
+     "PeriodTriggers": [
+      "ADS"
+     ],
+     "Profile": "NONE",
+     "SegmentDurationSeconds": 2,
+     "SegmentTemplateFormat": "TIME_WITH_TIMELINE",
+     "StreamSelection": {
+      "MaxVideoBitsPerSecond": 2147483647,
+      "MinVideoBitsPerSecond": 0,
+      "StreamOrder": "ORIGINAL"
+     },
+     "SuggestedPresentationDelaySeconds": 12,
+     "UtcTiming": "HTTP-ISO",
+     "UtcTimingUri": "https://time.akamai.com/?iso"
+    },
+    "Id": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "-dash"
+      ]
+     ]
+    },
+    "StartoverWindowSeconds": 1209600
+   },
+   "DependsOn": [
+    "MyMediaPackageChannelMyCfnChannelB46F0F54"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/DashEndpoint"
+   }
+  },
+  "MyMediaPackageChannelcmafEndpoint4477D740": {
+   "Type": "AWS::MediaPackage::OriginEndpoint",
+   "Properties": {
+    "Authorization": {
+     "CdnIdentifierSecret": {
+      "Ref": "MyMediaPackageChannelSecretsCdnSecret2915936B"
+     },
+     "SecretsRoleArn": {
+      "Fn::GetAtt": [
+       "MyMediaPackageChannelMyMediaPackageRole23057D86",
+       "Arn"
+      ]
+     }
+    },
+    "ChannelId": {
+     "Ref": "AWS::StackName"
+    },
+    "CmafPackage": {
+     "HlsManifests": [
+      {
+       "AdMarkers": "PASSTHROUGH",
+       "AdTriggers": [
+        "BREAK",
+        "DISTRIBUTOR_ADVERTISEMENT",
+        "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY",
+        "DISTRIBUTOR_PLACEMENT_OPPORTUNITY",
+        "PROVIDER_ADVERTISEMENT",
+        "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY",
+        "PROVIDER_PLACEMENT_OPPORTUNITY",
+        "SPLICE_INSERT"
+       ],
+       "Id": "cmaf",
+       "IncludeIframeOnlyStream": false,
+       "ManifestName": "index",
+       "PlaylistWindowSeconds": 300,
+       "ProgramDateTimeIntervalSeconds": 2,
+       "Url": "url"
+      }
+     ],
+     "SegmentDurationSeconds": 5,
+     "SegmentPrefix": "cmaf",
+     "StreamSelection": {
+      "MaxVideoBitsPerSecond": 2147483647,
+      "MinVideoBitsPerSecond": 0,
+      "StreamOrder": "ORIGINAL"
+     }
+    },
+    "Id": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "-cmaf"
+      ]
+     ]
+    },
+    "StartoverWindowSeconds": 1209600
+   },
+   "DependsOn": [
+    "MyMediaPackageChannelMyCfnChannelB46F0F54"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/cmafEndpoint"
+   }
+  },
+  "MyMediaPackageChannelEMPEndpointGetUrlEMPLambdaServiceRole52C7E95B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/GetUrlEMPLambda/ServiceRole/Resource"
+   }
+  },
+  "MyMediaPackageChannelEMPEndpointGetUrlEMPLambda40ECF733": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "e78c371598d01734940fa863e81c881eab4f53a6ff74f5a05f312da8a2377595.zip"
+    },
+    "FunctionName": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "_getUrl_EMP"
+      ]
+     ]
+    },
+    "Handler": "index.lambda_handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "MyMediaPackageChannelEMPEndpointGetUrlEMPLambdaServiceRole52C7E95B",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9"
+   },
+   "DependsOn": [
+    "MyMediaPackageChannelEMPEndpointGetUrlEMPLambdaServiceRole52C7E95B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/GetUrlEMPLambda/Resource",
+    "aws:asset:path": "asset.e78c371598d01734940fa863e81c881eab4f53a6ff74f5a05f312da8a2377595",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "MyMediaPackageChannelEMPEndpointmediaPackageAccessDF64B584": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "mediapackage:*",
+        "ssm:PutParameter"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MyMediaPackageChannelEMPEndpointmediaPackageAccessDF64B584",
+    "Roles": [
+     {
+      "Ref": "MyMediaPackageChannelEMPEndpointGetUrlEMPLambdaServiceRole52C7E95B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/mediaPackageAccess/Resource"
+   }
+  },
+  "MyMediaPackageChannelEMPEndpointOutputEMPD088D9CA": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"Lambda\",\"action\":\"invoke\",\"parameters\":{\"FunctionName\":\"",
+       {
+        "Ref": "AWS::StackName"
+       },
+       "_getUrl_EMP\",\"Payload\":\"{\\n            \\\"mediaPackageEndpointId\\\": \\\"",
+       {
+        "Ref": "AWS::StackName"
+       },
+       "-cmaf\\\",\\n            \\\"mediaPackageChannelId\\\": \\\"",
+       {
+        "Ref": "AWS::StackName"
+       },
+       "\\\",\\n            \\\"ssmName\\\": \\\"",
+       {
+        "Ref": "AWS::StackName"
+       },
+       "-EMP-url\\\"\\n          }\"},\"physicalResourceId\":{\"id\":\"outputEMPResourceId\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "MyMediaPackageChannelEMPEndpointOutputEMPCustomResourcePolicy508E40EF"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/OutputEMP/Resource/Default"
+   }
+  },
+  "MyMediaPackageChannelEMPEndpointOutputEMPCustomResourcePolicy508E40EF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "MyMediaPackageChannelEMPEndpointGetUrlEMPLambda40ECF733",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MyMediaPackageChannelEMPEndpointOutputEMPCustomResourcePolicy508E40EF",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/OutputEMP/CustomResourcePolicy/Resource"
+   }
+  },
+  "MyMediaPackageChannelEMPEndpointSSMParameterA7604984": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"SSM\",\"action\":\"getParameter\",\"parameters\":{\"Name\":\"",
+       {
+        "Ref": "AWS::StackName"
+       },
+       "-EMP-url\"},\"region\":\"",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\",\"physicalResourceId\":{\"id\":\"",
+       {
+        "Ref": "AWS::StackName"
+       },
+       "-EMP-url-",
+       {
+        "Ref": "AWS::Region"
+       },
+       "\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": false
+   },
+   "DependsOn": [
+    "MyMediaPackageChannelEMPEndpointOutputEMPCustomResourcePolicy508E40EF",
+    "MyMediaPackageChannelEMPEndpointOutputEMPD088D9CA",
+    "MyMediaPackageChannelEMPEndpointSSMParameterCustomResourcePolicyDDFC539C"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/SSMParameter/Resource/Default"
+   }
+  },
+  "MyMediaPackageChannelEMPEndpointSSMParameterCustomResourcePolicyDDFC539C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "ssm:GetParameter*",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:ssm:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":parameter/",
+          {
+           "Ref": "AWS::StackName"
+          },
+          "-EMP-url"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MyMediaPackageChannelEMPEndpointSSMParameterCustomResourcePolicyDDFC539C",
+    "Roles": [
+     {
+      "Ref": "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "MyMediaPackageChannelEMPEndpointOutputEMPCustomResourcePolicy508E40EF",
+    "MyMediaPackageChannelEMPEndpointOutputEMPD088D9CA"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/MyMediaPackageChannel/EMPEndpoint/SSMParameter/CustomResourcePolicy/Resource"
+   }
+  },
+  "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/AWS679f53fac002430cb0da5b7982bd2287/ServiceRole/Resource"
+   }
+  },
+  "AWS679f53fac002430cb0da5b7982bd22872D164C4C": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "ed6cd104ff5f101d06dae8cb2b87cc6e6d69b9a22055b467ea6cae10ff023023.zip"
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 120
+   },
+   "DependsOn": [
+    "AWS679f53fac002430cb0da5b7982bd2287ServiceRoleC1EA0FF2"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/AWS679f53fac002430cb0da5b7982bd2287/Resource",
+    "aws:asset:path": "asset.ed6cd104ff5f101d06dae8cb2b87cc6e6d69b9a22055b467ea6cae10ff023023",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/11Py07EMAz8lr2ngS0HuLIVXEHdD6iyiSneJk4VJ6xQ1X/HbVGFOM3Do7Fd62P9pO8P5saVdUPl8aKnczZ2UGJ1E4NNkDkYMj0kGa1aNR+0sVmhCXpqo4fFXPE9erTfi9zYrAI4NKOUSomeZNB8GiLwS+YtYY/0Qm6MSNLnTbg4o6fXQjZjpCWz8zNS7yHH3ZkVP3SGWW7UzwuI1qdiB8gnwzCvG0oeS1YtcCzJglpz8qOs7ZUtnGPo0u9QWm7crN6e/y/lzT+8ieRwO4WiA33lu6/6qB/18XBlxCoVyhhAtxv+ACQ6d71xAQAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "CdkMediapackageCloudfrontStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "MyMediaPackageChannelSecretscdnSecret439ECA1E": {
+   "Description": "The name of the cdnSecret",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "MediaPackage/",
+      {
+       "Ref": "AWS::StackName"
+      }
+     ]
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "cdnSecret"
+      ]
+     ]
+    }
+   }
+  },
+  "MyMediaPackageChannelMyMediaPackageChannelNameF630EF7C": {
+   "Description": "The MediaPackage Channel",
+   "Value": {
+    "Ref": "AWS::StackName"
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "mediaPackageName"
+      ]
+     ]
+    }
+   }
+  },
+  "MyMediaPackageChannelMyMediaPackageChannelEndPointHLSD5816A88": {
+   "Description": "The HLS endpoint of the MediaPackage Channel",
+   "Value": {
+    "Fn::GetAtt": [
+     "MyMediaPackageChannelHlsEndpointF46D94C4",
+     "Url"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "mediaPackage-HLS"
+      ]
+     ]
+    }
+   }
+  },
+  "MyMediaPackageChannelMyMediaPackageChannelEndPointDASHF98DA86A": {
+   "Description": "The DASH endpoint of the MediaPackage Channel",
+   "Value": {
+    "Fn::GetAtt": [
+     "MyMediaPackageChannelDashEndpointE806C536",
+     "Url"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "mediaPackage-DASH"
+      ]
+     ]
+    }
+   }
+  },
+  "MyMediaPackageChannelMyMediaPackageChannelEndPointCMAF4F82160F": {
+   "Description": "The CMAF endpoint of the MediaPackage Channel",
+   "Value": {
+    "Fn::GetAtt": [
+     "MyMediaPackageChannelcmafEndpoint4477D740",
+     "Url"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "mediaPackage-CMAF"
+      ]
+     ]
+    }
+   }
+  },
+  "MyMediaPackageChannelMyEMPIngestEndpointC98DED03": {
+   "Description": "The Ingest Info of the MediaPackage Channel",
+   "Value": {
+    "Fn::GetAtt": [
+     "MyMediaPackageChannelEMPEndpointSSMParameterA7604984",
+     "Parameter.Value"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "mediaPackage-ingest"
+      ]
+     ]
+    }
+   }
+  },
+  "MyMediaPackageChannelMyMediaPackageChannelRole864BA9E9": {
+   "Description": "The role of the MediaPackage Channel",
+   "Value": {
+    "Fn::GetAtt": [
+     "MyMediaPackageChannelMyMediaPackageRole23057D86",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": {
+     "Fn::Join": [
+      "",
+      [
+       {
+        "Ref": "AWS::StackName"
+       },
+       "mediaPackageRoleName"
+      ]
+     ]
+    }
+   }
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "il-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

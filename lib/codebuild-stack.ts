@@ -22,7 +22,7 @@ export class CodeBuildStack extends cdk.Stack {
           install: {
             commands: [
               'npm install -g aws-cdk',
-              'npm ci',
+              'npm install',
             ],
           },
           build: {
@@ -40,9 +40,19 @@ export class CodeBuildStack extends cdk.Stack {
 
     // Grant permissions to deploy CloudFormation stacks
     project.addToRolePolicy(new iam.PolicyStatement({
-      actions: ['cloudformation:*', 's3:*', 'iam:*', 'ec2:*'],
+      actions: [
+        'cloudformation:*',
+        's3:*',
+        'iam:*',
+        'ec2:*',
+        'ssm:*',
+        'logs:*',
+        'lambda:*',
+        // Add any other necessary permissions based on the resources your stack is creating
+      ],
       resources: ['*'],
     }));
+    
 
     // Output the CodeCommit repository URL
     new cdk.CfnOutput(this, 'RepositoryCloneUrlHttp', {

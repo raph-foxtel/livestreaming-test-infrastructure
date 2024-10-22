@@ -1,5 +1,5 @@
 {
-  "app": "npx ts-node --prefer-ts-exts bin/livestreaming-test-infrastructure.ts",
+  "app": "npx ts-node --prefer-ts-exts bin/cdk-mediapackage-cloudfront.ts",
   "watch": {
     "include": [
       "**"

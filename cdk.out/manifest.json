@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/cd0cbf7d99063b71ff33e7c60df3a4b5a34eae6cc997cf803c47df6aac81138f.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/3f36aa293585af705f9c4aa9356e0e424fd95306dfb3bac1e7ea3a2a2780581b.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -150,7 +150,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/d81dc8b717996204a45e4c9c4e2c4803dd4039d49f1b8875bcb785cfb3a28d25.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/24d20d7221c3656bc92b868fcd084ab2a282387b41bca634027290cee71b5d33.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -166,12 +166,6 @@
         "CodeBuildStack.assets"
       ],
       "metadata": {
-        "/CodeBuildStack/CDKRepo/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CDKRepo6F556EA9"
-          }
-        ],
         "/CodeBuildStack/CDKDeployProject/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -190,10 +184,10 @@
             "data": "CDKDeployProject38310664"
           }
         ],
-        "/CodeBuildStack/RepositoryCloneUrlHttp": [
+        "/CodeBuildStack/CodeBuildProjectName": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "RepositoryCloneUrlHttp"
+            "data": "CodeBuildProjectName"
           }
         ],
         "/CodeBuildStack/CDKMetadata/Default": [

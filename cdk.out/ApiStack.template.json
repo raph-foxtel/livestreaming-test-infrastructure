@@ -65,7 +65,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
      },
-     "S3Key": "e4bdde6e8cf0b40dc0122e0f6852e473c2e03bc66330b98f65e189b947086815.zip"
+     "S3Key": "3e15effc617eff682421b490906d9081c2e8e70bf42f2210a6bc834db518d730.zip"
     },
     "Environment": {
      "Variables": {
@@ -90,7 +90,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "ApiStack/DeploymentFunction/Resource",
-    "aws:asset:path": "asset.e4bdde6e8cf0b40dc0122e0f6852e473c2e03bc66330b98f65e189b947086815",
+    "aws:asset:path": "asset.3e15effc617eff682421b490906d9081c2e8e70bf42f2210a6bc834db518d730",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }

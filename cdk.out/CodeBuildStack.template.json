@@ -1,15 +1,5 @@
 {
  "Resources": {
-  "CDKRepo6F556EA9": {
-   "Type": "AWS::CodeCommit::Repository",
-   "Properties": {
-    "RepositoryDescription": "Repository for CDK code",
-    "RepositoryName": "my-cdk-repo"
-   },
-   "Metadata": {
-    "aws:cdk:path": "CodeBuildStack/CDKRepo/Resource"
-   }
-  },
   "CDKDeployProjectRoleF9EDC75D": {
    "Type": "AWS::IAM::Role",
    "Properties": {
@@ -35,16 +25,6 @@
    "Properties": {
     "PolicyDocument": {
      "Statement": [
-      {
-       "Action": "codecommit:GitPull",
-       "Effect": "Allow",
-       "Resource": {
-        "Fn::GetAtt": [
-         "CDKRepo6F556EA9",
-         "Arn"
-        ]
-       }
-      },
       {
        "Action": [
         "logs:CreateLogGroup",
@@ -141,7 +121,10 @@
         "cloudformation:*",
         "ec2:*",
         "iam:*",
-        "s3:*"
+        "lambda:*",
+        "logs:*",
+        "s3:*",
+        "ssm:*"
        ],
        "Effect": "Allow",
        "Resource": "*"
@@ -177,6 +160,7 @@
      "PrivilegedMode": false,
      "Type": "LINUX_CONTAINER"
     },
+    "Name": "CDKDeployProject",
     "ServiceRole": {
      "Fn::GetAtt": [
       "CDKDeployProjectRoleF9EDC75D",
@@ -184,14 +168,13 @@
      ]
     },
     "Source": {
-     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk\",\n        \"npm ci\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk deploy --context stack-name=$STACK_NAME --require-approval never\"\n      ]\n    }\n  }\n}",
-     "Location": {
-      "Fn::GetAtt": [
-       "CDKRepo6F556EA9",
-       "CloneUrlHttp"
-      ]
-     },
-     "Type": "CODECOMMIT"
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk\",\n        \"npm ci\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"npm run build\",\n        \"cdk deploy --all --require-approval never\"\n      ]\n    }\n  }\n}",
+     "Location": "https://github.com/raph-foxtel/livestreaming-test-infrastructure.git",
+     "ReportBuildStatus": true,
+     "Type": "GITHUB"
+    },
+    "Triggers": {
+     "Webhook": false
     }
    },
    "Metadata": {
@@ -201,7 +184,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/0WNwQ6DIBBEv8U7bq2X9u4H1NAPaBBosgqskaWmIfx7ozbxNDObtzMtXNs7NJVaY63NVDscID9Z6UmoNb6yJmM1eY8MWdqZIjItX9G9w5mK2KghoTOQ+4VGq3kj/rYIVB6yJGf3v017cqj3msOVIqSNlBa9M4/Ec+Jj5bx2FAwyUigikLEwxsunbeB6g6YaI2K9pMDoLchDf7/KfgXcAAAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02MQQ7CIBBFz9I9HVs2uu8BbOoBGgpjMpQypoCNIdzdiC5cvZ+Xly+hlxfoGnWEVpu1dbRAvkWlV6GOMGfNBpdEzkAed7aooxju/jeLILVBntjhx1aO7Ei/alRXKWLCwGnXtbmm+Ej1498O7A1FYl+EZ4Ngw+kpO+jP0DU2ELV78pE2hOnLNyFneyK2AAAA"
    },
    "Metadata": {
     "aws:cdk:path": "CodeBuildStack/CDKMetadata/Default"
@@ -210,13 +193,10 @@
   }
  },
  "Outputs": {
-  "RepositoryCloneUrlHttp": {
-   "Description": "CodeCommit Repository Clone URL (HTTPS)",
+  "CodeBuildProjectName": {
+   "Description": "CodeBuild Project Name",
    "Value": {
-    "Fn::GetAtt": [
-     "CDKRepo6F556EA9",
-     "CloneUrlHttp"
-    ]
+    "Ref": "CDKDeployProject38310664"
    }
   }
  },

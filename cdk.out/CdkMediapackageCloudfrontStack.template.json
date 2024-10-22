@@ -631,7 +631,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/11Py07EMAz8lr2ngS0HuLIVXEHdD6iyiSneJk4VJ6xQ1X/HbVGFOM3Do7Fd62P9pO8P5saVdUPl8aKnczZ2UGJ1E4NNkDkYMj0kGa1aNR+0sVmhCXpqo4fFXPE9erTfi9zYrAI4NKOUSomeZNB8GiLwS+YtYY/0Qm6MSNLnTbg4o6fXQjZjpCWz8zNS7yHH3ZkVP3SGWW7UzwuI1qdiB8gnwzCvG0oeS1YtcCzJglpz8qOs7ZUtnGPo0u9QWm7crN6e/y/lzT+8ieRwO4WiA33lu6/6qB/18XBlxCoVyhhAtxv+ACQ6d71xAQAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/12OQW6EMAxFzzL74DLMot3OoHbbCg6APMFQD8FBOCmqEHevgApVXf33f54UZ3DOXiA94aSJrbvE8R3mMqDtDE5azUp2pKA9CrY0wlxu3eSN7LQYxh7mwjtaxy0/vGP7vdadFtNTzTig7bAlmPNG8k8UIbc67yO3LK9SD54lLMZhf68R5rcoNrCX1Tm4ZGkdBX8si9FLhaoUFK5rGL3ALdqOwg2Vlu2HGIYYTEHq42jJbF4ZsGVpjY0afF+Nv48K10nzbTv8/7WRv5x7qXk/RXxN8NCnryyF8zOkp4cyJ2OUwD1BsecP4F+qCXIBAAA="
    },
    "Metadata": {
     "aws:cdk:path": "CdkMediapackageCloudfrontStack/CDKMetadata/Default"

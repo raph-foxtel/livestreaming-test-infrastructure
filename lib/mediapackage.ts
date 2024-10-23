@@ -147,7 +147,7 @@ export class MediaPackageCdnAuth extends Construct {
       this,
       "HlsEndpoint",
       {
-        channelId: this.myChannel.id,
+        channelId: 'LiveStreamingTestInfra'+this.myChannel.id,
         id: this.myChannel.id + "-hls",
         hlsPackage,
         // the properties below are optional

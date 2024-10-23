@@ -1,5 +1,5 @@
 {
- "Description": "Deploying CDK with EMP",
+ "Description": "Deploying Live stream on the go using CDK for deploying test Live stream on demand",
  "Resources": {
   "MyMediaPackageChannelSecretsCdnSecret2915936B": {
    "Type": "AWS::SecretsManager::Secret",
@@ -108,7 +108,15 @@
      }
     },
     "ChannelId": {
-     "Ref": "AWS::StackName"
+     "Fn::Join": [
+      "",
+      [
+       "LiveStreamingTestInfra",
+       {
+        "Ref": "AWS::StackName"
+       }
+      ]
+     ]
     },
     "HlsPackage": {
      "AdMarkers": "PASSTHROUGH",

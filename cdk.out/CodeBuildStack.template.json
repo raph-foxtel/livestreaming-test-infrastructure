@@ -168,7 +168,7 @@
      ]
     },
     "Source": {
-     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk\",\n        \"npm ci\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"npm run build\",\n        \"cdk deploy --all --require-approval never\"\n      ]\n    }\n  }\n}",
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk\",\n        \"npm install\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"npm run build\",\n        \"cdk deploy --context stack-name=$STACK_NAME --require-approval never\"\n      ]\n    }\n  }\n}",
      "Location": "https://github.com/raph-foxtel/livestreaming-test-infrastructure.git",
      "ReportBuildStatus": true,
      "Type": "GITHUB"

@@ -4,184 +4,17 @@
     "id": "App",
     "path": "",
     "children": {
-      "ApiStack": {
-        "id": "ApiStack",
-        "path": "ApiStack",
+      "InfraStack": {
+        "id": "InfraStack",
+        "path": "InfraStack",
         "children": {
-          "DeploymentFunction": {
-            "id": "DeploymentFunction",
-            "path": "ApiStack/DeploymentFunction",
-            "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "ApiStack/DeploymentFunction/ServiceRole",
-                "children": {
-                  "ImportServiceRole": {
-                    "id": "ImportServiceRole",
-                    "path": "ApiStack/DeploymentFunction/ServiceRole/ImportServiceRole",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.Resource",
-                      "version": "2.128.0"
-                    }
-                  },
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "ApiStack/DeploymentFunction/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
-                          "Statement": [
-                            {
-                              "Action": "sts:AssumeRole",
-                              "Effect": "Allow",
-                              "Principal": {
-                                "Service": "lambda.amazonaws.com"
-                              }
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        },
-                        "managedPolicyArns": [
-                          {
-                            "Fn::Join": [
-                              "",
-                              [
-                                "arn:",
-                                {
-                                  "Ref": "AWS::Partition"
-                                },
-                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-                              ]
-                            ]
-                          }
-                        ]
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.128.0"
-                    }
-                  },
-                  "DefaultPolicy": {
-                    "id": "DefaultPolicy",
-                    "path": "ApiStack/DeploymentFunction/ServiceRole/DefaultPolicy",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "ApiStack/DeploymentFunction/ServiceRole/DefaultPolicy/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                          "aws:cdk:cloudformation:props": {
-                            "policyDocument": {
-                              "Statement": [
-                                {
-                                  "Action": "codebuild:StartBuild",
-                                  "Effect": "Allow",
-                                  "Resource": "*"
-                                }
-                              ],
-                              "Version": "2012-10-17"
-                            },
-                            "policyName": "DeploymentFunctionServiceRoleDefaultPolicyBECE8181",
-                            "roles": [
-                              {
-                                "Ref": "DeploymentFunctionServiceRole7C9224B3"
-                              }
-                            ]
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.128.0"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.128.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.128.0"
-                }
-              },
-              "Code": {
-                "id": "Code",
-                "path": "ApiStack/DeploymentFunction/Code",
-                "children": {
-                  "Stage": {
-                    "id": "Stage",
-                    "path": "ApiStack/DeploymentFunction/Code/Stage",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.128.0"
-                    }
-                  },
-                  "AssetBucket": {
-                    "id": "AssetBucket",
-                    "path": "ApiStack/DeploymentFunction/Code/AssetBucket",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.128.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.128.0"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "ApiStack/DeploymentFunction/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
-                  "aws:cdk:cloudformation:props": {
-                    "code": {
-                      "s3Bucket": {
-                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-                      },
-                      "s3Key": "3e15effc617eff682421b490906d9081c2e8e70bf42f2210a6bc834db518d730.zip"
-                    },
-                    "environment": {
-                      "variables": {
-                        "CODEBUILD_PROJECT_NAME": {
-                          "Ref": "AWS::StackName"
-                        }
-                      }
-                    },
-                    "handler": "index.lambda_handler",
-                    "role": {
-                      "Fn::GetAtt": [
-                        "DeploymentFunctionServiceRole7C9224B3",
-                        "Arn"
-                      ]
-                    },
-                    "runtime": "python3.9",
-                    "timeout": 300
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.128.0"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.128.0"
-            }
-          },
           "DeploymentApi": {
             "id": "DeploymentApi",
-            "path": "ApiStack/DeploymentApi",
+            "path": "InfraStack/DeploymentApi",
             "children": {
               "Resource": {
                 "id": "Resource",
-                "path": "ApiStack/DeploymentApi/Resource",
+                "path": "InfraStack/DeploymentApi/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
                   "aws:cdk:cloudformation:props": {
@@ -195,11 +28,11 @@
               },
               "Deployment": {
                 "id": "Deployment",
-                "path": "ApiStack/DeploymentApi/Deployment",
+                "path": "InfraStack/DeploymentApi/Deployment",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "ApiStack/DeploymentApi/Deployment/Resource",
+                    "path": "InfraStack/DeploymentApi/Deployment/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
                       "aws:cdk:cloudformation:props": {
@@ -222,16 +55,16 @@
               },
               "DeploymentStage.prod": {
                 "id": "DeploymentStage.prod",
-                "path": "ApiStack/DeploymentApi/DeploymentStage.prod",
+                "path": "InfraStack/DeploymentApi/DeploymentStage.prod",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "ApiStack/DeploymentApi/DeploymentStage.prod/Resource",
+                    "path": "InfraStack/DeploymentApi/DeploymentStage.prod/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
                       "aws:cdk:cloudformation:props": {
                         "deploymentId": {
-                          "Ref": "DeploymentApiDeploymentD034E6C75852ebfb92cea95d72bcbdd280532b72"
+                          "Ref": "DeploymentApiDeploymentD034E6C72e0ddd29ae1a18b02259e73928e201a6"
                         },
                         "restApiId": {
                           "Ref": "DeploymentApi73878137"
@@ -252,7 +85,7 @@
               },
               "Endpoint": {
                 "id": "Endpoint",
-                "path": "ApiStack/DeploymentApi/Endpoint",
+                "path": "InfraStack/DeploymentApi/Endpoint",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnOutput",
                   "version": "2.128.0"
@@ -260,15 +93,15 @@
               },
               "Default": {
                 "id": "Default",
-                "path": "ApiStack/DeploymentApi/Default",
+                "path": "InfraStack/DeploymentApi/Default",
                 "children": {
                   "deployment": {
                     "id": "deployment",
-                    "path": "ApiStack/DeploymentApi/Default/deployment",
+                    "path": "InfraStack/DeploymentApi/Default/deployment",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "ApiStack/DeploymentApi/Default/deployment/Resource",
+                        "path": "InfraStack/DeploymentApi/Default/deployment/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
                           "aws:cdk:cloudformation:props": {
@@ -291,11 +124,11 @@
                       },
                       "POST": {
                         "id": "POST",
-                        "path": "ApiStack/DeploymentApi/Default/deployment/POST",
+                        "path": "InfraStack/DeploymentApi/Default/deployment/POST",
                         "children": {
-                          "ApiPermission.ApiStackDeploymentApi4989D170.POST..deployment": {
-                            "id": "ApiPermission.ApiStackDeploymentApi4989D170.POST..deployment",
-                            "path": "ApiStack/DeploymentApi/Default/deployment/POST/ApiPermission.ApiStackDeploymentApi4989D170.POST..deployment",
+                          "ApiPermission.InfraStackDeploymentApi6083F47E.POST..deployment": {
+                            "id": "ApiPermission.InfraStackDeploymentApi6083F47E.POST..deployment",
+                            "path": "InfraStack/DeploymentApi/Default/deployment/POST/ApiPermission.InfraStackDeploymentApi6083F47E.POST..deployment",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
                               "aws:cdk:cloudformation:props": {
@@ -342,9 +175,9 @@
                               "version": "2.128.0"
                             }
                           },
-                          "ApiPermission.Test.ApiStackDeploymentApi4989D170.POST..deployment": {
-                            "id": "ApiPermission.Test.ApiStackDeploymentApi4989D170.POST..deployment",
-                            "path": "ApiStack/DeploymentApi/Default/deployment/POST/ApiPermission.Test.ApiStackDeploymentApi4989D170.POST..deployment",
+                          "ApiPermission.Test.InfraStackDeploymentApi6083F47E.POST..deployment": {
+                            "id": "ApiPermission.Test.InfraStackDeploymentApi6083F47E.POST..deployment",
+                            "path": "InfraStack/DeploymentApi/Default/deployment/POST/ApiPermission.Test.InfraStackDeploymentApi6083F47E.POST..deployment",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
                               "aws:cdk:cloudformation:props": {
@@ -389,7 +222,7 @@
                           },
                           "Resource": {
                             "id": "Resource",
-                            "path": "ApiStack/DeploymentApi/Default/deployment/POST/Resource",
+                            "path": "InfraStack/DeploymentApi/Default/deployment/POST/Resource",
                             "attributes": {
                               "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
                               "aws:cdk:cloudformation:props": {
@@ -459,77 +292,17 @@
               "version": "2.128.0"
             }
           },
-          "MyAPI": {
-            "id": "MyAPI",
-            "path": "ApiStack/MyAPI",
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.CfnOutput",
-              "version": "2.128.0"
-            }
-          },
-          "CDKMetadata": {
-            "id": "CDKMetadata",
-            "path": "ApiStack/CDKMetadata",
+          "DeploymentFunction": {
+            "id": "DeploymentFunction",
+            "path": "InfraStack/DeploymentFunction",
             "children": {
-              "Default": {
-                "id": "Default",
-                "path": "ApiStack/CDKMetadata/Default",
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.CfnResource",
-                  "version": "2.128.0"
-                }
-              },
-              "Condition": {
-                "id": "Condition",
-                "path": "ApiStack/CDKMetadata/Condition",
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.CfnCondition",
-                  "version": "2.128.0"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "constructs.Construct",
-              "version": "10.3.0"
-            }
-          },
-          "BootstrapVersion": {
-            "id": "BootstrapVersion",
-            "path": "ApiStack/BootstrapVersion",
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.CfnParameter",
-              "version": "2.128.0"
-            }
-          },
-          "CheckBootstrapVersion": {
-            "id": "CheckBootstrapVersion",
-            "path": "ApiStack/CheckBootstrapVersion",
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.CfnRule",
-              "version": "2.128.0"
-            }
-          }
-        },
-        "constructInfo": {
-          "fqn": "aws-cdk-lib.Stack",
-          "version": "2.128.0"
-        }
-      },
-      "CodeBuildStack": {
-        "id": "CodeBuildStack",
-        "path": "CodeBuildStack",
-        "children": {
-          "CDKDeployProject": {
-            "id": "CDKDeployProject",
-            "path": "CodeBuildStack/CDKDeployProject",
-            "children": {
-              "Role": {
-                "id": "Role",
-                "path": "CodeBuildStack/CDKDeployProject/Role",
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "InfraStack/DeploymentFunction/ServiceRole",
                 "children": {
-                  "ImportRole": {
-                    "id": "ImportRole",
-                    "path": "CodeBuildStack/CDKDeployProject/Role/ImportRole",
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "InfraStack/DeploymentFunction/ServiceRole/ImportServiceRole",
                     "constructInfo": {
                       "fqn": "aws-cdk-lib.Resource",
                       "version": "2.128.0"
@@ -537,7 +310,182 @@
                   },
                   "Resource": {
                     "id": "Resource",
-                    "path": "CodeBuildStack/CDKDeployProject/Role/Resource",
+                    "path": "InfraStack/DeploymentFunction/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.128.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "InfraStack/DeploymentFunction/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InfraStack/DeploymentFunction/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "codebuild:StartBuild",
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "DeploymentFunctionServiceRoleDefaultPolicyBECE8181",
+                            "roles": [
+                              {
+                                "Ref": "DeploymentFunctionServiceRole7C9224B3"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.128.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.128.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.128.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "InfraStack/DeploymentFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "InfraStack/DeploymentFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.128.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "InfraStack/DeploymentFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.128.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.128.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "InfraStack/DeploymentFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "e9cf99f00e28fdbd66b821bdad7204f086f30624dfc469052311f367c5904036.zip"
+                    },
+                    "environment": {
+                      "variables": {
+                        "CODEBUILD_PROJECT_NAME": {
+                          "Ref": "AWS::StackName"
+                        }
+                      }
+                    },
+                    "handler": "index.lambda_handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "DeploymentFunctionServiceRole7C9224B3",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "python3.9",
+                    "timeout": 300
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.128.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.128.0"
+            }
+          },
+          "MyLiveStreamingTestPlatformAPI": {
+            "id": "MyLiveStreamingTestPlatformAPI",
+            "path": "InfraStack/MyLiveStreamingTestPlatformAPI",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.128.0"
+            }
+          },
+          "CDKDeployProject": {
+            "id": "CDKDeployProject",
+            "path": "InfraStack/CDKDeployProject",
+            "children": {
+              "Role": {
+                "id": "Role",
+                "path": "InfraStack/CDKDeployProject/Role",
+                "children": {
+                  "ImportRole": {
+                    "id": "ImportRole",
+                    "path": "InfraStack/CDKDeployProject/Role/ImportRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.128.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InfraStack/CDKDeployProject/Role/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -562,11 +510,11 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "CodeBuildStack/CDKDeployProject/Role/DefaultPolicy",
+                    "path": "InfraStack/CDKDeployProject/Role/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "CodeBuildStack/CDKDeployProject/Role/DefaultPolicy/Resource",
+                        "path": "InfraStack/CDKDeployProject/Role/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
@@ -706,7 +654,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "CodeBuildStack/CDKDeployProject/Resource",
+                "path": "InfraStack/CDKDeployProject/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
                   "aws:cdk:cloudformation:props": {
@@ -735,7 +683,7 @@
                       "type": "GITHUB",
                       "reportBuildStatus": true,
                       "location": "https://github.com/raph-foxtel/livestreaming-test-infrastructure.git",
-                      "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk\",\n        \"npm ci\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"npm run build\",\n        \"cdk deploy --all --require-approval never\"\n      ]\n    }\n  }\n}"
+                      "buildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"npm install -g aws-cdk\",\n        \"npm install\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"cdk deploy CdkMediapackageCloudfrontStack --context stackName=$STACK_NAME --require-approval never\"\n      ]\n    }\n  }\n}"
                     },
                     "triggers": {
                       "webhook": false
@@ -753,21 +701,13 @@
               "version": "2.128.0"
             }
           },
-          "CodeBuildProjectName": {
-            "id": "CodeBuildProjectName",
-            "path": "CodeBuildStack/CodeBuildProjectName",
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.CfnOutput",
-              "version": "2.128.0"
-            }
-          },
           "CDKMetadata": {
             "id": "CDKMetadata",
-            "path": "CodeBuildStack/CDKMetadata",
+            "path": "InfraStack/CDKMetadata",
             "children": {
               "Default": {
                 "id": "Default",
-                "path": "CodeBuildStack/CDKMetadata/Default",
+                "path": "InfraStack/CDKMetadata/Default",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnResource",
                   "version": "2.128.0"
@@ -775,7 +715,7 @@
               },
               "Condition": {
                 "id": "Condition",
-                "path": "CodeBuildStack/CDKMetadata/Condition",
+                "path": "InfraStack/CDKMetadata/Condition",
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.CfnCondition",
                   "version": "2.128.0"
@@ -789,7 +729,7 @@
           },
           "BootstrapVersion": {
             "id": "BootstrapVersion",
-            "path": "CodeBuildStack/BootstrapVersion",
+            "path": "InfraStack/BootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnParameter",
               "version": "2.128.0"
@@ -797,7 +737,7 @@
           },
           "CheckBootstrapVersion": {
             "id": "CheckBootstrapVersion",
-            "path": "CodeBuildStack/CheckBootstrapVersion",
+            "path": "InfraStack/CheckBootstrapVersion",
             "constructInfo": {
               "fqn": "aws-cdk-lib.CfnRule",
               "version": "2.128.0"
@@ -986,7 +926,15 @@
                       }
                     },
                     "channelId": {
-                      "Ref": "AWS::StackName"
+                      "Fn::Join": [
+                        "",
+                        [
+                          "LiveStreamingTestInfra",
+                          {
+                            "Ref": "AWS::StackName"
+                          }
+                        ]
+                      ]
                     },
                     "hlsPackage": {
                       "adMarkers": "PASSTHROUGH",

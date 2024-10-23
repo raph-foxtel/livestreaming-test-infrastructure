@@ -14,7 +14,7 @@ export class Secrets extends Construct {
 
     const cdnSecret = new secretsmanager.Secret(this, "CdnSecret", {
       secretName: "MediaPackage/"+Aws.STACK_NAME,
-      description: "Secret for Secure Resilient Live Streaming Delivery",
+      description: "Secret for LiveStreamingTestInfra",
       generateSecretString: {
         secretStringTemplate: JSON.stringify({ MediaPackageCDNIdentifier: "" }),
         generateStringKey: "MediaPackageCDNIdentifier", //MUST keep this StringKey to use with EMP
@@ -25,7 +25,7 @@ export class Secrets extends Construct {
     new CfnOutput(this, "cdnSecret", {
       value: cdnSecret.secretName,
       exportName: Aws.STACK_NAME + "cdnSecret",
-      description: "The name of the cdnSecret",
+      description: "The name of the cdnSecret to use with EMP endpoint",
     });
 
 

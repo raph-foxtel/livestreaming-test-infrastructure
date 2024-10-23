@@ -72,7 +72,7 @@ export class MediaPackageCdnAuth extends Construct {
     configuration: MediaPackageParameterReaderProps
   ) {
     super(scope, id);
-    const myMediaPackageChannelName = Aws.STACK_NAME;
+    const myMediaPackageChannelName = 'LiveStreamingTestInfra_'+Aws.STACK_NAME;
 
     /*
      * First step: Preparing Secrets + IAM 👇
@@ -147,7 +147,7 @@ export class MediaPackageCdnAuth extends Construct {
       this,
       "HlsEndpoint",
       {
-        channelId: 'LiveStreamingTestInfra'+this.myChannel.id,
+        channelId: this.myChannel.id,
         id: this.myChannel.id + "-hls",
         hlsPackage,
         // the properties below are optional
